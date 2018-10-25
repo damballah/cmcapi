@@ -1,16 +1,23 @@
 from cmcapi import *
-from datetime import datetime
 
 Ncrypto=cmc()
 
-a=Ncrypto.FichierJSON
-b=Ncrypto.GlobalDatas
-Ncrypto.IdCrypto=RecupIdCrypto(a,"VET")
+fJSON=Ncrypto.FichierJSON
+gDatas=Ncrypto.GlobalDatas
+idCoin=Ncrypto.RecupIdCrypto(fJSON,"VET")
+
+price=Ncrypto.GetCryptoInfo(gDatas,idCoin,"price")
+rank=Ncrypto.GetCryptoInfo(gDatas,idCoin,"rank")
+change24h=Ncrypto.GetCryptoInfo(gDatas,idCoin,"change_24h")
+
+print("RANK : "+ rank)
+print("PRICE : "+ price)
+print("CHANGE 24H : "+ change24h)
 
 
-print(a)
-#print(b)
-print(Ncrypto.IdCrypto)
+
+
+
 
 
 
