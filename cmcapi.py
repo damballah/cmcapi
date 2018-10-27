@@ -31,13 +31,34 @@ def MakeJsonFromDatas(Datas):
 	JsonDatas=json.loads(Datas)
 	return JsonDatas
 
-	
-def ConfigGetApiFromIdWithDevise(devise):
-	if devise!="USD":
+def controlDevise(devise):
+	i=0
+	devise=devise.upper()
+	flag=False
+	availableDevise=["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD", "ZAR","BTC", "ETH","XRP", "LTC","BCH"]
+	for d in availableDevise:
+		if availableDevise[i]==devise:
+			flag=True
+		else:
+			i=i+1
+	return flag
+
+def ConfigGetApiFromIdWithDevise(id,devise):
+	i=0
+	devise=devise.upper()
+	flag=False
+	availableDevise=["AUD", "BRL", "CAD", "CHF", "CLP", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PKR", "PLN", "RUB", "SEK", "SGD", "THB", "TRY", "TWD", "ZAR","BTC", "ETH","XRP", "LTC","BCH"]
+	for d in availableDevise:
+		if availableDevise[i]==devise:
+			flag=True
+		else:
+			i=i+1
+
+	if flag==True:
 		urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/?convert=" + devise
 	else:
-		urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/"
-		devise="USD"
+		urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/"	
+		
 	return urlFromIdWithDevise
 
 	
@@ -50,7 +71,11 @@ class cmc():
 		Symbole=Symbole.upper()
 		devise=devise.upper()
 		self.symbol=Symbole
-		self.devise=devise
+		
+		if controlDevise(devise)==True:
+			self.devise=devise
+		else:
+			self.devise="USD"
 		
 		
 		listingPrincipal=GetDatasFromApi(urlApiListingGlobal)
@@ -60,17 +85,10 @@ class cmc():
 			
 			id=getIdFromSymbol(Symbole,listingJsonPrin)
 			
-			if self.devise!="":
-				urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/?convert=" + self.devise
-				
-			else:
-				urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/"
-				self.devise="USD"
+			
+			#print(urlFromIdWithDevise)
 
-
-			print(urlFromIdWithDevise)
-
-			urlApiGetPropertyFromId=urlFromIdWithDevise
+			urlApiGetPropertyFromId=ConfigGetApiFromIdWithDevise(id,self.devise)
 			listingParCrypto=GetDatasFromApi(urlApiGetPropertyFromId)
 			listingJsonCrypto=MakeJsonFromDatas(listingParCrypto)
 			
@@ -79,19 +97,19 @@ class cmc():
 			self.symbol=str(listingJsonCrypto['data']['symbol'])
 			self.websiteslug=str(listingJsonCrypto['data']['website_slug'])
 			self.rank=str(listingJsonCrypto['data']['rank'])
-			self.circulating=str(listingJsonCrypto['data']['circulating_supply']) + " " + self.symbol
-			self.total=str(listingJsonCrypto['data']['total_supply']) + " " + self.symbol
-			self.max=str(listingJsonCrypto['data']['max_supply']) + " " + self.symbol
-			self.price=str(listingJsonCrypto['data']['quotes'][self.devise]['price']) + " "+ self.devise
-			self.marketcap=str(listingJsonCrypto['data']['quotes'][self.devise]['market_cap']) + " "+ self.devise
-			self.vol24h=str(listingJsonCrypto['data']['quotes'][self.devise]['volume_24h']) + " "+ self.devise
-			self.change1h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_1h']) + "%"
-			self.change24h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_24h']) + "%"
-			self.change7d=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_7d']) + "%"
+			self.circulating=str(listingJsonCrypto['data']['circulating_supply'])
+			self.total=str(listingJsonCrypto['data']['total_supply'])
+			self.max=str(listingJsonCrypto['data']['max_supply'])
+			self.price=str(listingJsonCrypto['data']['quotes'][self.devise]['price'])
+			self.marketcap=str(listingJsonCrypto['data']['quotes'][self.devise]['market_cap'])
+			self.vol24h=str(listingJsonCrypto['data']['quotes'][self.devise]['volume_24h'])
+			self.change1h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_1h'])
+			self.change24h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_24h'])
+			self.change7d=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_7d'])
 
 		else:
 			print("\nErr : la variable 'symbol' est mal affectée. \nSoit la valeur est vide, soit le symbol de la crypto demandée n'existe pas.")
-			print('Exemple correct avec le bitcoin : newInfoCrypto=cmc("btc")')
+			print('Exemple correct avec le bitcoin : newInfoCrypto=cmc("btc","usd")')
 			print("")
 			
 		
