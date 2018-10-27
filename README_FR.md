@@ -54,6 +54,7 @@ Je désire récupérer le taux de change depuis 24h sur de l'Ethereum :
 Résultat à la date du 27/10/2018 à 10:52 ---> 0.42
 
 ## Exemple complet avec toutes les informations récupérables et converties en euro sur le XRP
+Copiez-collez l'exemple suivant pour tester **cmcapi** où téléchargez directement le fichier [test.py](https://github.com/damballah/cmcapi/blob/master/test.py).
 
     from cmcapi import cmc
     
