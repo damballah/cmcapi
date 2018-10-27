@@ -53,7 +53,7 @@ I want to retrieve the exchange rate for 24 hours on Ethereum:
     
 Result on the date 27/10/2018 at 10:52 ---> 0.42
 
-## Exemple complet avec toutes les informations récupérables et converties en euro sur le XRP
+## Complete example with all the information recoverable and converted into euro on the XRP
 Copy and paste the following example to test **cmcapi** where you can directly download the [test.py](https://github.com/damballah/cmcapi/blob/master/test.py) file.
 
     from cmcapi import cmc
