@@ -18,7 +18,7 @@
 
 # Version Python et Installation
 
- - Développer pour le Python 3.6.4
+ - Développer pour le Python 3.6.4 (Linux et Windows)
  - L'installation est à l'ancienne, copier le fichier [cmcapi.py](https://github.com/damballah/cmcapi/blob/master/cmcapi.py) à la racine de votre projet, tout simplement.
 
 
