@@ -1,2 +1,0 @@
-# cmcapi
-CMCAPI : CoinMarketCapAPI
