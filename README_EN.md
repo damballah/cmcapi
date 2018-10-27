@@ -1,6 +1,6 @@
 # CMCAPI v1.0 : CoinMarketCapAPI Wrapper
 
-**cmcapi** est un wrapper très simple d'utilisation et réduit aux fonctionnalités de récupérations d'informations minimales suivantes :
+**cmcapi** is a very easy-to-use wrapper and reduces to the following minimal information retrieval features:
  - id
  - name
  - symbol
@@ -16,45 +16,45 @@
  - percent_change_24h
  - percent_change_7d
 
-# Version Python et Installation
+# Python Version and Installation
 
- - Développer pour le Python 3.6.4 (Linux et Windows)
- - L'installation est à l'ancienne, copier le fichier [cmcapi.py](https://github.com/damballah/cmcapi/blob/master/cmcapi.py) à la racine de votre projet, tout simplement.
+ - Develop for Python 3.6.4 (Linux and Windows)
+ - The installation is old-school, copy the [cmcapi.py](https://github.com/damballah/cmcapi/blob/master/cmcapi.py) file to the root of your project, simply.
 
 
-## Utilisation
+## use
 
-Une fois le fichier  [cmcapi.py](https://github.com/damballah/cmcapi/blob/master/cmcapi.py) copié à la racine de votre projet, éditer votre fichier Python principal, et appelez le module de la façon suivante : 
+Once the  [cmcapi.py](https://github.com/damballah/cmcapi/blob/master/cmcapi.py) file is copied to the root of your project, edit your main Python file, and call the module as follows:
 
 **`from cmcapi import cmc`**
 
-## Créer un nouvel objet *cmc*
-Pour initialiser un nouvel objet ***cmc***, il vous suffit de suivre cette exemple avec le bitcoin : 
+## Create a new *cmc* object
+To initialize a new ***cmc*** object, just follow this example with the bitcoin:
 
 **`btc=cmc("btc","usd")`**
 
-Vous n'êtes pas obligé de saisir en paramètre la devise "*usd*" et vous pouvez laisser celui ci vide.
+You do not have to enter the "*usd*" currency as a parameter and you can leave it empty.
 
-exemple : **`btc=cmc("btc","")`**
+example: **`btc=cmc("btc","")`**
 
-Néanmoins par défaut, les informations seront en *usd*, vous pouvez choisir entre les devises communes suivantes : 
+Nevertheless by default, the information will be in *usd*, you can choose between the following common currencies:
 
 *AUD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP, HKD, HUF, IDR, ILS, INR, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PKR, PLN, RUB, SEK, SGD, THB, TRY, TWD*. 
 
-Et pour les devises crypto, les suivantes : *ZAR, BTC, ETH XRP, LTC, BCH*.
+And for the crypto currencies, the following ones: *ZAR, BTC, ETH XRP, LTC, BCH*.
 
-## Un cas concret dans l'utilisation
+## A concrete case in use
 
-Je désire récupérer le taux de change depuis 24h sur de l'Ethereum : 
+I want to retrieve the exchange rate for 24 hours on Ethereum: 
 
     eth=cmc("eth","eur")
     chg24=eth.change24h
     print(chg24)
     
-Résultat à la date du 27/10/2018 à 10:52 ---> 0.42
+Result on the date 27/10/2018 at 10:52 ---> 0.42
 
 ## Exemple complet avec toutes les informations récupérables et converties en euro sur le XRP
-Copiez-collez l'exemple suivant pour tester **cmcapi** où téléchargez directement le fichier [test.py](https://github.com/damballah/cmcapi/blob/master/test.py).
+Copy and paste the following example to test **cmcapi** where you can directly download the [test.py](https://github.com/damballah/cmcapi/blob/master/test.py) file.
 
     from cmcapi import cmc
     
@@ -100,7 +100,7 @@ Copiez-collez l'exemple suivant pour tester **cmcapi** où téléchargez directe
     print("-------------------- ")
     print("FIN DES INFORMATIONS")
     print("")
-Résultat : 
+Result: 
 
 ![Résultat](https://github.com/damballah/cmcapi/blob/master/Capture_resultat_exemple_complet_cmcapi.PNG)
 
