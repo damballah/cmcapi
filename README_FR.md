@@ -100,6 +100,7 @@ Résultat à la date du 27/10/2018 à 10:52 ---> 0.42
     print("FIN DES INFORMATIONS")
     print("")
 Résultat : 
+
 ![Résultat](https://github.com/damballah/cmcapi/blob/master/Capture_resultat_exemple_complet_cmcapi.PNG)
 
 
