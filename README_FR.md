@@ -1,4 +1,4 @@
-# CMCAPI : CoinMarketCapAPI v0.1
+# CMCAPI v1.0 : CoinMarketCapAPI Wrapper
 
 **cmcapi** est un wrapper très simple d'utilisation et réduit aux fonctionnalités de récupérations d'informations minimales suivantes :
  - id
