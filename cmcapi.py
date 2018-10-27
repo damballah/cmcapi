@@ -1,122 +1,115 @@
 import urllib.request
 import json
-from datetime import datetime
 
-	# Générateur du nom de fichier JSON reprenant la date et l'heure système #
-def GenNomDeFichierJson():
-	T=str(datetime.now())
-	T=T.replace('-','')
-	T=T.replace(':','')
-	T=T.replace('.','')
-	T=T.replace(' ','')
-	NomFichierJson="CoinMarketCap_"+T+".json"
-	return NomFichierJson
-
-	# Récupération du fichier JSON en utilisant l'API de CoinMarketCap
-def GetCMCJson(NomDeFichier):
-	LesDatas=""
-	with urllib.request.urlopen("https://api.coinmarketcap.com/v2/ticker/") as url:
-		LesDatas = json.loads(url.read().decode())
-		with open(NomDeFichier, 'w') as f:
-			f.write(json.dumps(LesDatas, indent=4))
+# Récupération du fichier JSON en utilisant l'API de CoinMarketCap
+def ifSymboleExist(symbolCrypto,LesDatas):
+	i=0
+	flag=False
+	for values in LesDatas['data']:
+		symb=LesDatas['data'][i]['symbol']
+		if symb==symbolCrypto:
+			flag=True
+		i=i+1
+	return flag
+	
+def getIdFromSymbol(symbolCrypto,LesDatas):
+	i=0
+	flag=False
+	for values in LesDatas['data']:
+		symb=LesDatas['data'][i]['symbol']
+		if symb==symbolCrypto:
+			id=LesDatas['data'][i]['id']
+		i=i+1
+	return id
+	
+def GetDatasFromApi(AdresseURL):
+	with urllib.request.urlopen(AdresseURL) as url:
+		LesDatas = url.read().decode()
 	return LesDatas
 	
-	''' Récupération de l'id d'une crypto dans le fichier JSON en passant
-		en paramètre le nom du fichier JSON et le symbole de la crypto '''
-		
+def MakeJsonFromDatas(Datas):
+	JsonDatas=json.loads(Datas)
+	return JsonDatas
+
+	
+def ConfigGetApiFromIdWithDevise(devise):
+	if devise!="USD":
+		urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/?convert=" + devise
+	else:
+		urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/"
+		devise="USD"
+	return urlFromIdWithDevise
+
+	
+
 class cmc():
-	""" Classe permettant de jouer avec l'API de coinmarketcap """
-	
-	def __init__(self):
+	def __init__(self,Symbole,devise):
 		
-		self.FichierJSON=GenNomDeFichierJson()
-		self.GlobalDatas=GetCMCJson(self.FichierJSON)
-	
-
-	def RecupIdCrypto(self,leFichier,SymbCrypto):
-		nLigne=0
-		tLigne=0
-		laBonneLigne=0
-		SiExiste=False
-	
-		f=open(leFichier, "r")
-		for line in f.readlines():
-			nLigne=nLigne+1
-			if SymbCrypto in line:
-				laBonneLigne=nLigne-2
-				SiExiste=True				
-		f.close
+		urlApiListingGlobal="https://api.coinmarketcap.com/v2/listings/"
 		
-		if SiExiste==True:
-			f=open(leFichier,"r")
-			for line in f.readlines():
-				tLigne=tLigne+1
-				if tLigne==laBonneLigne:
-					#print(line)
-					id=line
-					id=id.replace(',','')
-					id=id.replace('"id": ','')
-					id=id.replace(' ','')	
-			f.close()
-		else:
-			id="id non trouvé !"
-			nLigne=0
-			tLigne=0
-			laBonneLigne=0
-			SiExiste=False
+		Symbole=Symbole.upper()
+		devise=devise.upper()
+		self.symbol=Symbole
+		self.devise=devise
 		
-		return(id)
-	
-	def GetCryptoInfo(self,GlbDatas,IdCrypto,Valeur):
-		if IdCrypto!="id non trouvé !":
-			LaValeur=""
-			if Valeur=="name":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['name'])
-			elif Valeur=="symbol":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['symbol'])
-			elif Valeur=="website_slug":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['website_slug'])
-			elif Valeur=="rank":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['rank'])
-			elif Valeur=="circulating_supply":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['circulating_supply'])
-			elif Valeur=="total_supply":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['total_supply'])
-			elif Valeur=="max_supply":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['max_supply'])
-			elif Valeur=="price":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['price']) + "$"
-			elif Valeur=="volume_24h":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['volume_24h']) + "$"
-			elif Valeur=="market_cap":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['market_cap']) + "$"
-			elif Valeur=="change_1h":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['percent_change_1h']) + "%"
-			elif Valeur=="change_24h":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['percent_change_24h']) + "%"
-			elif Valeur=="change_7d":
-				LaValeur=str(GlbDatas['data'][IdCrypto.rstrip()]['quotes']['USD']['percent_change_7d']) + "%"
+		
+		listingPrincipal=GetDatasFromApi(urlApiListingGlobal)
+		listingJsonPrin=MakeJsonFromDatas(listingPrincipal)
+			
+		if ifSymboleExist(Symbole,listingJsonPrin)==True:
+			
+			id=getIdFromSymbol(Symbole,listingJsonPrin)
+			
+			if self.devise!="":
+				urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/?convert=" + self.devise
+				
 			else:
-				LaValeur="Err : Valeur vide où non existante"
-		return LaValeur
-		
-		
+				urlFromIdWithDevise="https://api.coinmarketcap.com/v2/ticker/" + str(id) + "/"
+				self.devise="USD"
 
+
+			print(urlFromIdWithDevise)
+
+			urlApiGetPropertyFromId=urlFromIdWithDevise
+			listingParCrypto=GetDatasFromApi(urlApiGetPropertyFromId)
+			listingJsonCrypto=MakeJsonFromDatas(listingParCrypto)
+			
+			self.id=str(listingJsonCrypto['data']['id'])
+			self.name=str(listingJsonCrypto['data']['name'])
+			self.symbol=str(listingJsonCrypto['data']['symbol'])
+			self.websiteslug=str(listingJsonCrypto['data']['website_slug'])
+			self.rank=str(listingJsonCrypto['data']['rank'])
+			self.circulating=str(listingJsonCrypto['data']['circulating_supply']) + " " + self.symbol
+			self.total=str(listingJsonCrypto['data']['total_supply']) + " " + self.symbol
+			self.max=str(listingJsonCrypto['data']['max_supply']) + " " + self.symbol
+			self.price=str(listingJsonCrypto['data']['quotes'][self.devise]['price']) + " "+ self.devise
+			self.marketcap=str(listingJsonCrypto['data']['quotes'][self.devise]['market_cap']) + " "+ self.devise
+			self.vol24h=str(listingJsonCrypto['data']['quotes'][self.devise]['volume_24h']) + " "+ self.devise
+			self.change1h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_1h']) + "%"
+			self.change24h=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_24h']) + "%"
+			self.change7d=str(listingJsonCrypto['data']['quotes'][self.devise]['percent_change_7d']) + "%"
+
+		else:
+			print("\nErr : la variable 'symbol' est mal affectée. \nSoit la valeur est vide, soit le symbol de la crypto demandée n'existe pas.")
+			print('Exemple correct avec le bitcoin : newInfoCrypto=cmc("btc")')
+			print("")
+			
 		
 		
 		
+		 
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
+
+
+
+
+
+
+
+
+
+
 		
