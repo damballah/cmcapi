@@ -39,9 +39,9 @@ example: **`btc=cmc("btc","")`**
 
 Nevertheless by default, the information will be in *usd*, you can choose between the following common currencies:
 
-*AUD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP, HKD, HUF, IDR, ILS, INR, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PKR, PLN, RUB, SEK, SGD, THB, TRY, TWD*. 
+*AUD, BRL, CAD, CHF, CLP, CNY, CZK, DKK, EUR, GBP, HKD, HUF, IDR, ILS, INR, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PKR, PLN, RUB, SEK, SGD, THB, TRY, TWD, ZAR*. 
 
-And for the crypto currencies, the following ones: *ZAR, BTC, ETH XRP, LTC, BCH*.
+And for the crypto currencies, the following ones: *BTC, ETH XRP, LTC, BCH*.
 
 ## A concrete case in use
 
