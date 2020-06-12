@@ -1,4 +1,4 @@
-FROM python:3.4.0
+FROM python:latest
 WORKDIR /app
 COPY . .
 ENTRYPOINT python3 test.py
